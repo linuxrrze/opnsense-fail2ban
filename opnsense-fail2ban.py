@@ -25,21 +25,26 @@
 # pylint: disable=invalid-name,missing-module-docstring,redefined-outer-name
 
 import sys
+import os
 import pprint
 import logging
 import argparse
 import json
 import requests
+import configparser
+
+config = configparser.ConfigParser()
+config.read(os.path.dirname(__file__)+'/opnsense-fail2ban.conf')
 
 # define endpoint and credentials
-api_key = '{{ opnsense_api_key }}'
-api_secret = '{{ opnsense_api_secret }}'
+api_key = config['DEFAULT']['opnsense_api_key']
+api_secret = config['DEFAULT']['opnsense_api_secret']
 
 # /api/<module>/<controller>/<command>/[<param1>/[<param2>/...]]
-api_url = 'https://{{ opnsense_api_host }}/api'
+api_url = 'https://%s/api' % config['DEFAULT']['opnsense_api_host']
 
 # default alias to use
-default_alias = '{{ opnsense_default_alias }}'
+default_alias = config['DEFAULT']['opnsense_default_alias']
 
 class LoggingAction(argparse.Action): # pylint: disable=missing-class-docstring
     def __call__(self, parser, namespace, values, option_string=None):

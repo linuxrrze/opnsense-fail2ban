@@ -53,29 +53,12 @@ if you prefer to use the package manager instead of pip.
 
 ## setup
 
-The script uses jinja2 variables, so you have several options:
+Edit `opnsense-fail2ban.conf`:
 
-### ansible
-
-Install the script using ansible and define the variables in your ansible var files.
-See [this post](https://zero-sys.net/ubloit/blog/opnsensefail2ban) for more details.
-
-### jinja2-cli
-
-Define your vars in a yaml file `jinja2.yml` (see [sample-jinja2.yml](sample-jinja2.yml)) and run:
-```
-make 
-```
-This will install `jinja2-cli` and generate `script/opnsense-fail2ban.py` with the jinja2 vars replaced according to your settings.
-
-### manual
-
-Edit `opnsense-fail2ban.py` and replace the jinja2 vars:
-
- * `{{ opnsense_api_host }}`
- * `{{ opnsense_api_key }}`
- * `{{ opnsense_api_secret }}`
- * `{{ opnsense_default_alias }}`
+ * `opnsense_api_host`
+ * `opnsense_api_key`
+ * `opnsense_api_secret`
+ * `opnsense_default_alias`
 
 ## caveats
 
