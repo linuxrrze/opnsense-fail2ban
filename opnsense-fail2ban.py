@@ -110,6 +110,20 @@ def kill_states(ip):
         return json.loads(r.text)
     sys.exit('ERROR @ kill_states: %s :: %s' % (r.status_code, r.text,))
 
+def alias_reconfigure():
+    """kill all states for a defined IP"""
+    purl = '%s/%s/reconfigure' % (api_url, 'firewall/alias')
+    #headers = {'Content-Type': 'application/json'}
+    r = requests.post(
+        purl,
+        #headers=headers,
+        #json={},
+        auth=(api_key, api_secret)
+        )
+    if r.status_code == 200:
+        return json.loads(r.text)
+    sys.exit('ERROR @ alias_reconfigure: %s :: %s' % (r.status_code, r.text,))
+
 
 logger = logging.getLogger()
 logging.basicConfig(
@@ -194,6 +208,9 @@ if args.action == 'ban':
         if logger.isEnabledFor(logging.DEBUG):
             pprint.PrettyPrinter(indent=4).pprint(rkill)
 
+    # Apply
+    alias_reconfigure()
+
 if args.action == 'unban':
     if not args.ip:
         sys.exit('ERROR: missing IP')
@@ -213,6 +230,9 @@ if args.action == 'unban':
         else:
             logger.info('OK: missing new IP in cont')
 
+    # Apply
+    alias_reconfigure()
+
 if args.action == 'flush':
     if not aliascont:
         logger.warning('no need to flush %s as it is empty', args.group)
@@ -231,3 +251,6 @@ if args.action == 'flush':
             sys.exit('ERROR: list is not flushed')
         else:
             logger.info('OK: list is empty')
+
+    # Apply
+    alias_reconfigure()
